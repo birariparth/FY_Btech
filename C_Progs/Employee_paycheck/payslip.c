@@ -27,15 +27,15 @@ int main()
     printf("|                              Invoice                              |\n");
     printf("---------------------------------------------------------------------\n");
     printf("|\tEmployee name:%45s |\n", name);
-    printf("|\tEmployee contact details:%34s |\n", num);
+    printf("|\tEmployee contact details:%35s |\n", num);
     printf("|\tEmployee id:%47d |\n", id);
     printf("|\tNumber of hours worked by employee today:%18d |\n", hours);
     
     if(type == 'm')
     {
         wage = hours*mansal;
-        printf("|\tPost of employee:\t\t\t\t\t\t\t\t\t Manager    |\n");
-        printf("|\tSalary as per hours worker is:\t\t\t\t\t%d \t        |\n", wage);
+        printf("|\tPost of employee:\t\t\t\t Manager |\n");
+        printf("|\tSalary as per hours worker is:%29d |\n", wage);
     }
     else if(type == 'r')
     {
