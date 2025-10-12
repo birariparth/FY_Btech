@@ -8,14 +8,31 @@ def type_lyric(line, char_delay=0.065):
 
 def print_lyrics():
     lyrics = [
-          "Haathon ko sambhaale mere haathon mein",
-          "Kaise haathon ko sambhaale mere haathon mein?",
-          "Jab tak neend na aaye in lakeeron mein",
-          "Baatein hon…",
-          "Haan…",
+        "Lights off, room swallowed by  dark.",
+        "Blanket up to my chin, 2:00 a.m. on the clock.",
+        "Tick… tick… the sound louder than my thoughts,",
+        "heart races like it wants to pop out of my chest.",
+        "Silence so complete it makes ears bleed,",
+        "Vision starts to get blurry and nose sniffing.",
+        "Air feeling heaviver,",
+        "my neck a dry well, sand filling the throat.",
+        "I want to speak but the walls answer with nothing.",
+        "All day I wore a smile, practiced being fine,",
+        "Just to hold the pillow like a clutcher trying to keep everything together.",
+        "Small things explode into storms, I snap at people I love,",
+        "then apologize to the empty room.",
+        "I try to force light into day,",
+        "but everything folds back into shadow.",
+        "Sometimes I think of leaving",
+        "running until the map erases, until memory goes numb.",
+        "But instead I stay here,",
+        "dark room, dry throat,",
+        "hands trembling, feet feeling like a iceberg.",
+        "Stream of thought spilling out",
+        "no fixes, no lectures,no support, just the slow rule of night."
     ]
-    delays = [1.0, 1.8, 2.1, 2.4, 1.7]
-    print("Arz Kiya Hai Lyrics:\n")
+    delays = [1.0, 1.8, 2.1, 2.4, 1.7,1.0, 1.8, 2.1, 2.4, 1.7,1.0, 1.8, 2.1, 2.4, 1.7,1.0, 1.8, 2.1, 2.4, 1.7,1.8,1.0,1.8]
+    print("2am:\n")
     time.sleep(1.5)
     for i, line in enumerate(lyrics):
         type_lyric(line)
