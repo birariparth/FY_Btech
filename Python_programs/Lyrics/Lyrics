@@ -1,6 +1,6 @@
 import time
 import sys
-def type_lyric(line, char_delay=0.065):
+def type_lyric(line, char_delay=0.13):
     for char in line:
         print(char, end='', flush=True)
         time.sleep(char_delay)
@@ -8,16 +8,19 @@ def type_lyric(line, char_delay=0.065):
 
 def print_lyrics():
     lyrics = [
-    "They say boys fall in love easily,",
-    "but how easy is it when one look won’t fade?",
-    "She’s in your coffee, in the rain’s aftertaste,",
-    "in a song you never liked till now.",
-    "You forget your words when her hand fits yours,",
-    "and lilies suddenly feel too soft.",
-    "You kiss her forehead instead of speaking,",
-    "because love’s just madness whispered quiet."
+    "I saw her in the rightest way",
+    "Looking like Anne Hathaway",
+    "Laughing while she hit her pen,",
+    "and coughed..., and coughed...",
+    "And then she came up to my knees",
+    "Begging, 'Baby would you please",
+    "Do the things you said you'd do to me...., to me...?'",
+    "Oh wont you kiss me on the mouth and love me like a sailor?",
+    "And when you get a taste, can you tell me whats my flavour?",
+    "I don't beleive in God, but i believe that you're my saviour",
+    "My mom says that she's worried, but I'm covered in His favor",
     ]
-    delays = [1.0, 0.8, 1.2, 0.8, 1.2, 0.8, 1.2, 0.8]
+    delays = [1.3,1.4,1.1,1.7,1.2,0.8,0.5,0.1,0.1,0.1]
     print("\n")
     time.sleep(1.5)
     for i, line in enumerate(lyrics):
@@ -25,4 +28,4 @@ def print_lyrics():
         time.sleep(delays[i])
 
 print_lyrics()
-time.sleep(0.02)
+#time.sleep(0.02)
