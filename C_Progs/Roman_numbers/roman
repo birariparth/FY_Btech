@@ -1,0 +1,127 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdbool.h>
+
+int romanToInt(char* s) 
+{
+    int n;
+    int sum = 0;
+    n = strlen(s);
+    
+    bool previous_I = false;
+    bool previous_X = false;
+    bool previous_C = false;
+
+    for(int i=0; i<n; i++)
+    {
+        if(s[i] == 'I')
+        {
+            sum += 1;
+            previous_I = true;
+            previous_X = false;
+            previous_C = false;
+        }
+        else if(s[i] == 'V')
+        {
+            if(previous_I == true)
+            {
+                sum += 3;   // because we already added 1 before, need +3 more to make 4
+                previous_I = false;
+            }
+            else
+            {
+                sum += 5;
+            }    
+            previous_X = false;
+            previous_C = false;
+        }
+        else if(s[i] == 'X')
+        {
+            if(previous_I == true)
+            {
+                sum += 8;   // already added 1, +8 makes 9
+                previous_I = false;
+            }
+            else
+            {
+                sum += 10;
+            }
+            previous_X = true;
+            previous_C = false;
+        }
+        else if(s[i] == 'L')
+        {
+            if(previous_X == true)
+            {
+                sum += 30;  // already added 10, +30 makes 40
+                previous_X = false;
+            }
+            else
+            {
+                sum += 50;
+            }
+            previous_I = false;
+            previous_C = false;
+        }
+        else if(s[i] == 'C')
+        {
+            if(previous_X == true)
+            {
+                sum += 80;  // already added 10, +80 makes 90
+                previous_X = false;
+            }
+            else
+            {
+                sum += 100;
+            }
+            previous_C = true;
+            previous_I = false;
+        }
+        else if(s[i] == 'D')
+        {
+            if(previous_C == true)
+            {
+                sum += 300; // already added 100, +300 makes 400
+                previous_C = false;
+            }
+            else
+            {
+                sum += 500;
+            }
+            previous_I = false;
+            previous_X = false;
+        }
+        else if(s[i] == 'M')
+        {
+            if(previous_C == true)
+            {
+                sum += 800; // already added 100, +800 makes 900
+                previous_C = false;
+            }
+            else
+            {
+                sum += 1000;
+            }
+            previous_I = false;
+            previous_X = false;
+        }
+        else 
+        {
+            return 0;
+        }
+    }
+
+    return sum;
+}
+
+int main()
+{
+    char roman[20];
+    printf("Enter Roman numeral: ");
+    scanf("%s", roman);
+
+    int result = romanToInt(roman);
+    printf("Integer value: %d\n", result);
+
+    return 0;
+}
