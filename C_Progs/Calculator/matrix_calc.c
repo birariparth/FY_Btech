@@ -147,7 +147,7 @@ void performOperation(int arrA[100][100], int arrB[100][100], int arrC[100][100]
             break;
 
         case '0':
-            break;  // Exit case, do nothing here
+            break;  // Exit case, do nothing here15
 
         default:
             printf("Invalid input, please try again.\n");
