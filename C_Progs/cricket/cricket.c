@@ -171,18 +171,21 @@ int main()
         if (batsmen[i].runs < 0 || batsmen[i].balls < 0)
         {
             printf("Error: Negative values not allowed.\n");
-            i--; continue;
+            i--; 
+            continue;
         }
         if (batsmen[i].balls == 0 && batsmen[i].runs > 0)
         {
             printf("Error: Runs scored with 0 balls is impossible!\n");
-            i--; continue;
+            i--; 
+            continue;
         }
         if (batsmen[i].runs > batsmen[i].balls * 6)
         {
             printf("Error: %s scored %d runs in %d balls — impossible!\n",
                    batsmen[i].name, batsmen[i].runs, batsmen[i].balls);
-            i--; continue;
+            i--; 
+            continue;
         }
     }
 
@@ -213,21 +216,33 @@ int main()
         if (bowlers[i].overs < 0 || bowlers[i].runs_given < 0 || bowlers[i].wickets < 0)
         {
             printf("Error: Negative values are invalid.\n");
-            i--; continue;
+            i--; 
+            continue;
         }
 
-        if (bowlers[i].overs == 0 && bowlers[i].runs_given > 0)
+        if (bowlers[i].overs == 0)
+{
+        if (bowlers[i].runs_given > 0)
         {
             printf("Error: Cannot concede runs without bowling any overs!\n");
-            i--; continue;
+            i--; 
+            continue;
         }
+        if (bowlers[i].wickets > 0)
+        {
+            printf("Error: Cannot take wickets without bowling any overs!\n");
+            i--; 
+            continue;
+        }
+}
 
         int whole = (int)bowlers[i].overs;                       //type casting used float to int
         int balls = (int)round((bowlers[i].overs - whole) * 10);
         if (balls > 5)
         {
             printf("Error: Invalid overs (%.1f) — fractional part cannot exceed .5 (6 balls).\n", bowlers[i].overs);
-            i--; continue;
+            i--; 
+            continue;
         }
 
         totalOvers += bowlers[i].overs;
@@ -238,14 +253,16 @@ int main()
             printf("Error: Total overs exceed 50 (%.1f so far).\n", totalOvers);
             totalOvers -= bowlers[i].overs;
             totalWickets -= bowlers[i].wickets;
-            i--; continue;
+            i--; 
+            continue;
         }
         if (totalWickets > 10)
         {
             printf("Error: Total wickets exceed 10 (%d so far).\n", totalWickets);
             totalOvers -= bowlers[i].overs;
             totalWickets -= bowlers[i].wickets;
-            i--; continue;
+            i--; 
+            continue;
         }
     }
 
