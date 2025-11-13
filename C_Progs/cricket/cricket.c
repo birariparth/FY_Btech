@@ -102,8 +102,8 @@ void displayData()
     while (fgets(line, sizeof(line), fbats))
     {
         char name[MAX]; int runs, balls;
-        sscanf(line, "%[^,],%d,%d", name, &runs, &balls);
-        float sr = balls > 0 ? ((float)runs / balls) * 100 : 0.0;
+        sscanf(line, "%[^,],%d,%d", name, &runs, &balls);           //[^,] reads upto comma  and sscanf used for formatted string   
+        float sr = balls > 0 ? ((float)runs / balls) * 100 : 0.0;            //ternary operator used
         printf("%-20s %-5d %-5d %-12.2f\n", name, runs, balls, sr);
     }
     fclose(fbats);
@@ -158,8 +158,8 @@ int main()
     {
         printf("\nEnter details for Batsman %d\n", i + 1);
         printf("Name: ");
-        fgets(batsmen[i].name, MAX, stdin);
-        batsmen[i].name[strcspn(batsmen[i].name, "\n")] = 0;
+        fgets(batsmen[i].name, MAX, stdin);                  //stdin used to read input from user while writing in file
+        batsmen[i].name[strcspn(batsmen[i].name, "\n")] = 0;        //string complement span helps to replace newline charc and assign strin terminator \0
 
         printf("Runs scored: ");
         scanf("%d", &batsmen[i].runs);
@@ -199,7 +199,7 @@ int main()
         printf("\nEnter details for Bowler %d\n", i + 1);
         printf("Name: ");
         fgets(bowlers[i].name, MAX, stdin);
-        bowlers[i].name[strcspn(bowlers[i].name, "\n")] = 0;
+        bowlers[i].name[strcspn(bowlers[i].name, "\n")] = 0;           //\n -> \0
 
         printf("Overs bowled: ");
         scanf("%f", &bowlers[i].overs);
@@ -216,7 +216,13 @@ int main()
             i--; continue;
         }
 
-        int whole = (int)bowlers[i].overs;
+        if (bowlers[i].overs == 0 && bowlers[i].runs_given > 0)
+        {
+            printf("Error: Cannot concede runs without bowling any overs!\n");
+            i--; continue;
+        }
+
+        int whole = (int)bowlers[i].overs;                       //type casting used float to int
         int balls = (int)round((bowlers[i].overs - whole) * 10);
         if (balls > 5)
         {

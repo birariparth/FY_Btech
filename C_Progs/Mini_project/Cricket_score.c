@@ -216,6 +216,12 @@ int main()
             i--; continue;
         }
 
+        if (bowlers[i].overs == 0 && bowlers[i].runs_given > 0)
+        {
+            printf("Error: Cannot concede runs without bowling any overs!\n");
+            i--; continue;
+        }
+
         int whole = (int)bowlers[i].overs;                       //type casting used float to int
         int balls = (int)round((bowlers[i].overs - whole) * 10);
         if (balls > 5)
