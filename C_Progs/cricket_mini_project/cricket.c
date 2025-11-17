@@ -71,6 +71,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
         printf("Error opening %s\n", dateFile);
         exit(1);
     }
+    
     time_t t = time(NULL);         //using epoch format specifer to access time
     struct tm tm = *localtime(&t);      //used to convert t seconds into readable format
     fprintf(fdate, "%04d-%02d-%02d %02d:%02d:%02d\n",
@@ -293,6 +294,7 @@ int main()
         }
 
         int totalRuns = extras;
+
         for (int i = 0; i < batsmenCount; i++)
         totalRuns += batsmen[i].runs;
 
