@@ -4,6 +4,8 @@
 #include <time.h>
 #include <math.h>
 #include <direct.h>
+#include <windows.h>
+#include <conio.h>
 
 #define MAX 50
 
@@ -27,11 +29,11 @@ typedef struct
 void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowlersCount, int extras, int innings)
 {
     char batsFile[150], bowlFile[150], extraFile[150], dateFile[150];   
-    char dir[1024];
+    //char dir[1024];
 
-    getcwd(dir, sizeof(dir));
-    printf("\tWriting data of inning %d\n", innings);
-    printf("\t Current directory : %s", dir);
+    //getcwd(dir, sizeof(dir));
+    //printf("\tWriting data of inning %d\n", innings);
+    //printf("\t Current directory : %s", dir);
 
     char basedir[60] = "D:\\Repositories\\FY_Btech\\C_Progs\\cricket_mini_project\\";
 
@@ -95,6 +97,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
 
 void displayData(int innings)
 {
+    system("cls");
     char line[100];
 
     char batsFile[100], bowlFile[100], extraFile[100], dateFile[100];  
@@ -164,6 +167,47 @@ void displayData(int innings)
 
     printf("\nExtras: %d\n", extras);
 }
+
+// --- Ball & Bat Animation Functions ---
+void printAt(int x, int y, char c) 
+{
+    printf("\033[%d;%dH%c", y, x, c);
+    fflush(stdout);
+}
+
+void drawBat(int x, int topY) 
+{
+    for (int i = 0; i < 3; i++)
+    { 
+        printAt(x, topY + i, '|');       // Handle
+    }
+    for (int i = 3; i < 7; i++) 
+    {                                 
+        printAt(x - 1, topY + i, '#');      // Bottom
+        printAt(x, topY + i, '#');
+        printAt(x + 1, topY + i, '#');
+    }
+}
+
+void animateBall() 
+{
+    //system("cls");       // Clear screen for animation
+    int batX = 40, batTopY = 17;
+    drawBat(batX, batTopY);
+
+    int x = 10, y = 22, prevx, prevy;
+    for (int i = 0; i < 28; i++) 
+    {
+        printAt(x, y, 'O');        // Ball
+        Sleep(150);                // Speed 150ms
+        prevx = x; prevy = y;
+        printAt(prevx, prevy, ' '); // Erase previous
+        x += 1;
+    }
+    printAt(1, y+4, ' '); // Move cursor below animation
+}
+
+
 
 int main()
 {
@@ -341,6 +385,8 @@ int main()
         printf("Team 2 wins by %d runs!\n", totalRuns2 - totalRuns1);
     else
         printf("The match is a tie!\n");
+
+    animateBall();
 
     return 0;
 }
