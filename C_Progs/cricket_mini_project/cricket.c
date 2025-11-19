@@ -3,6 +3,7 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
+#include <direct.h>
 
 #define MAX 50
 
@@ -25,14 +26,21 @@ typedef struct
 
 void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowlersCount, int extras, int innings)
 {
-    char batsFile[30], bowlFile[30], extraFile[30], dateFile[30];   
+    char batsFile[150], bowlFile[150], extraFile[150], dateFile[150];   
+    char dir[1024];
 
-    sprintf(batsFile, "innings%d_batsmen.txt", innings);   
-    sprintf(bowlFile, "innings%d_bowlers.txt", innings);   
-    sprintf(extraFile, "innings%d_extras.txt", innings);   
-    sprintf(dateFile, "innings%d_datetime.txt", innings);  
+    getcwd(dir, sizeof(dir));
+    printf("\tWriting data of inning %d\n", innings);
+    printf("\t Current directory : %s", dir);
 
-    FILE *fbats = fopen(batsFile, "w");    
+    char basedir[60] = "D:\\Repositories\\FY_Btech\\C_Progs\\cricket_mini_project\\";
+
+    sprintf(batsFile, "%sinnings%d_batsmen.txt", basedir, innings);   
+    sprintf(bowlFile, "%sinnings%d_bowlers.txt", basedir, innings);   
+    sprintf(extraFile, "%sinnings%d_extras.txt", basedir, innings);   
+    sprintf(dateFile, "%sinnings%d_datetime.txt", basedir, innings);  
+
+    FILE *fbats = fopen(batsFile, "w+");    
     if (!fbats)
     {
         printf("Error opening %s\n", batsFile);
@@ -44,7 +52,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
     }
     fclose(fbats);
 
-    FILE *fball = fopen(bowlFile, "w");    
+    FILE *fball = fopen(bowlFile, "w+");    
     if (!fball)
     {
         printf("Error opening %s\n", bowlFile);
@@ -56,7 +64,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
     }
     fclose(fball);
 
-    FILE *fextra = fopen(extraFile, "w");   
+    FILE *fextra = fopen(extraFile, "w+");   
     if (!fextra)
     {
         printf("Error opening %s\n", extraFile);
@@ -65,7 +73,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
     fprintf(fextra, "%d", extras);
     fclose(fextra);
 
-    FILE *fdate = fopen(dateFile, "w");   
+    FILE *fdate = fopen(dateFile, "w+");   
     if (!fdate)
     {
         printf("Error opening %s\n", dateFile);
@@ -78,6 +86,8 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
             tm.tm_year + 1900, tm.tm_mon + 1, tm.tm_mday,
             tm.tm_hour, tm.tm_min, tm.tm_sec);
     fclose(fdate);
+
+    printf("\tData written to inning %d\n", innings);
 }
 
 
@@ -87,14 +97,17 @@ void displayData(int innings)
 {
     char line[100];
 
-    char batsFile[30], bowlFile[30], extraFile[30], dateFile[30];  
+    char batsFile[100], bowlFile[100], extraFile[100], dateFile[100];  
 
-    sprintf(batsFile, "innings%d_batsmen.txt", innings);   
-    sprintf(bowlFile, "innings%d_bowlers.txt", innings);   
-    sprintf(extraFile, "innings%d_extras.txt", innings);  
-    sprintf(dateFile, "innings%d_datetime.txt", innings);  
+    char basedir[60] = "D:\\Repositories\\FY_Btech\\C_Progs\\cricket_mini_project\\";
+
+    sprintf(batsFile, "%sinnings%d_batsmen.txt", basedir, innings);   
+    sprintf(bowlFile, "%sinnings%d_bowlers.txt", basedir, innings);   
+    sprintf(extraFile, "%sinnings%d_extras.txt", basedir, innings);   
+    sprintf(dateFile, "%sinnings%d_datetime.txt", basedir, innings);  
 
     printf("\n--- Cricket Match Summary (Innings %d) ---\n\n", innings);
+    printf("");
 
     FILE *fdate = fopen(dateFile, "r");
     if (fdate && fgets(line, sizeof(line), fdate))   //using size of so not to overflow reading and fgets reads until newline or maximum length
@@ -303,7 +316,7 @@ int main()
         printf("\nTotal Team Score (Innings %d): %d/%d in %.1f overs\n", innings, totalRuns, totalWickets, totalOvers);
         displayData(innings);
         
-        // Store totals for comparison
+        // For concluding statement comparison
         if (innings == 1)
         {
             totalRuns1 = totalRuns;
@@ -320,7 +333,7 @@ int main()
         }
     }
 
-    // Simple comparison of total scores
+    // Concluding Statement
     printf("\n--- Match Result ---\n");
     if (totalRuns1 > totalRuns2)
         printf("Team 1 wins by %d runs!\n", totalRuns1 - totalRuns2);
