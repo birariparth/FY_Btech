@@ -3,9 +3,8 @@
 #include <string.h>
 #include <time.h>
 #include <math.h>
-#include <direct.h>
 #include <windows.h>
-#include <conio.h>
+
 
 #define MAX 50
 
