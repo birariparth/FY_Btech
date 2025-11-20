@@ -274,6 +274,14 @@ int main()
                 i--; 
                 continue;
             }
+            if (batsmen[i].runs > 400)
+            {
+                printf("Error: %s scored %d runs — individual score cannot exceed 400.\n",
+                batsmen[i].name, batsmen[i].runs);
+                i--; 
+                continue;
+            }
+
         }
 
         printf("\nEnter number of bowlers: ");
@@ -282,6 +290,8 @@ int main()
         Bowler bowlers[bowlersCount];
 
         for (int i = 0; i < bowlersCount; i++)
+    {
+        while (1)  // Keep asking until valid input
         {
             printf("\nEnter details for Bowler %d\n", i + 1);
             printf("Name: ");
@@ -296,60 +306,59 @@ int main()
             scanf("%d", &bowlers[i].wickets);
             getchar();
 
-            // Validation checks
+            // --- Validation checks ---
             if (bowlers[i].overs < 0 || bowlers[i].runs_given < 0 || bowlers[i].wickets < 0)
             {
                 printf("Error: Negative values are invalid.\n");
-                i--; 
                 continue;
             }
 
-            if (bowlers[i].overs == 0)
+            if (bowlers[i].overs == 0 && (bowlers[i].runs_given > 0 || bowlers[i].wickets > 0))
             {
-                if (bowlers[i].runs_given > 0)
-                {
-                    printf("Error: Cannot concede runs without bowling any overs!\n");
-                    i--; 
-                    continue;
-                }
-                if (bowlers[i].wickets > 0)
-                {
-                    printf("Error: Cannot take wickets without bowling any overs!\n");
-                    i--; 
-                    continue;
-                } 
+                printf("Error: Cannot concede runs or take wickets without bowling.\n");
+                continue;
             }
 
-            int whole = (int)bowlers[i].overs;                       //type casting used float to int
+            int whole = (int)bowlers[i].overs;
             int balls = (int)round((bowlers[i].overs - whole) * 10);
             if (balls > 5)
             {
                 printf("Error: Invalid overs (%.1f) — fractional part cannot exceed .5 (6 balls).\n", bowlers[i].overs);
-                i--; 
                 continue;
             }
 
+            if (bowlers[i].wickets > 10)
+            {
+                printf("Error: A bowler cannot take more than 10 wickets. Enter again.\n");
+                continue;
+            }
+
+            if (totalOvers + bowlers[i].overs > 50.0)
+            {
+                printf("Error: Total overs exceed 50 (%.1f so far).\n", totalOvers + bowlers[i].overs);
+                continue;
+            }
+
+            if (totalWickets + bowlers[i].wickets > 10)
+            {
+                printf("Error: Total wickets exceed 10 after adding this bowler (%d so far).\n", totalWickets + bowlers[i].wickets);
+                continue;
+            }
+            int ballsBowled = whole * 6 + balls;
+            if (bowlers[i].wickets > ballsBowled)
+            {
+                printf("Error: %s cannot take %d wickets in %.1f overs (%d balls).\n",
+                bowlers[i].name, bowlers[i].wickets, bowlers[i].overs, ballsBowled);
+                continue;
+            }
+
+            // If all checks pass, update totals and break the while loop
             totalOvers += bowlers[i].overs;
             totalWickets += bowlers[i].wickets;
-
-            if (totalOvers > 50.0)
-            {
-                printf("Error: Total overs exceed 50 (%.1f so far).\n", totalOvers);
-                totalOvers -= bowlers[i].overs;
-                totalWickets -= bowlers[i].wickets;
-                i--; 
-                continue;
-            }
-            if (totalWickets > 10)
-            {
-                printf("Error: Total wickets exceed 10 (%d so far).\n", totalWickets);
-                totalOvers -= bowlers[i].overs;
-                totalWickets -= bowlers[i].wickets;
-                i--; 
-                continue;
-            }
-            
+            break;
         }
+    }
+
 
         printf("\nEnter extras: ");
         scanf("%d", &extras);
