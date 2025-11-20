@@ -4,6 +4,7 @@
 #include <time.h>
 #include <math.h>
 #include <windows.h>
+#include <stdbool.h>
 
 
 #define MAX 50
@@ -228,13 +229,29 @@ int main()
     float totalOvers1 = 0.0, totalOvers2 = 0.0;
     int extras1 = 0, extras2 = 0;
 
+    boolean getinning1data = true;
+    boolean getinning2data = true;
+
+    ReEnter:
+
     for (innings = 1; innings <= 2; innings++)
     {
+        if (innings == 1 && getinning1data == false)
+        {
+            continue;
+        }
+        else if (innings == 2 && getinning2data == false)
+        {
+            continue;         
+        }
+        
         printf("\n--- Enter data for Innings %d ---\n", innings);
 
         int batsmenCount, bowlersCount, extras;
         float totalOvers = 0.0;
         int totalWickets = 0;
+        int totalballsBowled = 0;
+        int totalballsFaced = 0;
 
         printf("Enter number of batsmen: ");
         scanf("%d", &batsmenCount);
@@ -253,6 +270,8 @@ int main()
             printf("Balls faced: ");
             scanf("%d", &batsmen[i].balls);
             getchar();
+
+            totalballsFaced += batsmen[i].balls;
 
             // --- Validation checks ---
             if (batsmen[i].runs < 0 || batsmen[i].balls < 0)
@@ -290,74 +309,93 @@ int main()
         Bowler bowlers[bowlersCount];
 
         for (int i = 0; i < bowlersCount; i++)
-    {
-        while (1)  // Keep asking until valid input
         {
-            printf("\nEnter details for Bowler %d\n", i + 1);
-            printf("Name: ");
-            fgets(bowlers[i].name, MAX, stdin);
-            bowlers[i].name[strcspn(bowlers[i].name, "\n")] = 0;
-
-            printf("Overs bowled: ");
-            scanf("%f", &bowlers[i].overs);
-            printf("Runs given: ");
-            scanf("%d", &bowlers[i].runs_given);
-            printf("Wickets taken: ");
-            scanf("%d", &bowlers[i].wickets);
-            getchar();
-
-            // --- Validation checks ---
-            if (bowlers[i].overs < 0 || bowlers[i].runs_given < 0 || bowlers[i].wickets < 0)
+            while (1)  // Keep asking until valid input
             {
-                printf("Error: Negative values are invalid.\n");
-                continue;
-            }
+                printf("\nEnter details for Bowler %d\n", i + 1);
+                printf("Name: ");
+                fgets(bowlers[i].name, MAX, stdin);
+                bowlers[i].name[strcspn(bowlers[i].name, "\n")] = 0;
 
-            if (bowlers[i].overs == 0 && (bowlers[i].runs_given > 0 || bowlers[i].wickets > 0))
-            {
-                printf("Error: Cannot concede runs or take wickets without bowling.\n");
-                continue;
-            }
+                printf("Overs bowled: ");
+                scanf("%f", &bowlers[i].overs);
+                printf("Runs given: ");
+                scanf("%d", &bowlers[i].runs_given);
+                printf("Wickets taken: ");
+                scanf("%d", &bowlers[i].wickets);
+                getchar();
 
-            int whole = (int)bowlers[i].overs;
-            int balls = (int)round((bowlers[i].overs - whole) * 10);
-            if (balls > 5)
-            {
-                printf("Error: Invalid overs (%.1f) — fractional part cannot exceed .5 (6 balls).\n", bowlers[i].overs);
-                continue;
-            }
+                // --- Validation checks ---
+                if (bowlers[i].overs < 0 || bowlers[i].runs_given < 0 || bowlers[i].wickets < 0)
+                {
+                    printf("Error: Negative values are invalid.\n");
+                    continue;
+                }
 
-            if (bowlers[i].wickets > 10)
-            {
-                printf("Error: A bowler cannot take more than 10 wickets. Enter again.\n");
-                continue;
-            }
+                if (bowlers[i].overs == 0 && (bowlers[i].runs_given > 0 || bowlers[i].wickets > 0))
+                {
+                    printf("Error: Cannot concede runs or take wickets without bowling.\n");
+                    continue;
+                }
 
-            if (totalOvers + bowlers[i].overs > 50.0)
-            {
-                printf("Error: Total overs exceed 50 (%.1f so far).\n", totalOvers + bowlers[i].overs);
-                continue;
-            }
+                int whole = (int)bowlers[i].overs;
+                int balls = (int)round((bowlers[i].overs - whole) * 10);
 
-            if (totalWickets + bowlers[i].wickets > 10)
-            {
-                printf("Error: Total wickets exceed 10 after adding this bowler (%d so far).\n", totalWickets + bowlers[i].wickets);
-                continue;
-            }
-            int ballsBowled = whole * 6 + balls;
-            if (bowlers[i].wickets > ballsBowled)
-            {
-                printf("Error: %s cannot take %d wickets in %.1f overs (%d balls).\n",
-                bowlers[i].name, bowlers[i].wickets, bowlers[i].overs, ballsBowled);
-                continue;
-            }
+                if (balls > 5)
+                {
+                    printf("Error: Invalid overs (%.1f) — fractional part cannot exceed .5 (6 balls).\n", bowlers[i].overs);
+                    continue;
+                }
 
-            // If all checks pass, update totals and break the while loop
-            totalOvers += bowlers[i].overs;
-            totalWickets += bowlers[i].wickets;
-            break;
+                if (bowlers[i].wickets > 10)
+                {
+                    printf("Error: A bowler cannot take more than 10 wickets. Enter again.\n");
+                    continue;
+                }
+
+                if (totalOvers + bowlers[i].overs > 50.0)
+                {
+                    printf("Error: Total overs exceed 50 (%.1f so far).\n", totalOvers + bowlers[i].overs);
+                    continue;
+                }
+
+                if (totalWickets + bowlers[i].wickets > 10)
+                {
+                    printf("Error: Total wickets exceed 10 after adding this bowler (%d so far).\n", totalWickets + bowlers[i].wickets);
+                    continue;
+                }
+
+                int ballsBowled = whole * 6 + balls;
+                totalballsBowled += ballsBowled;
+
+                if (bowlers[i].wickets > ballsBowled)
+                {
+                    printf("Error: %s cannot take %d wickets in %.1f overs (%d balls).\n",
+                    bowlers[i].name, bowlers[i].wickets, bowlers[i].overs, ballsBowled);
+                    continue;
+                }
+
+                // If all checks pass, update totals and break the while loop
+                totalOvers += bowlers[i].overs;
+                totalWickets += bowlers[i].wickets;
+                break;
+            }
         }
-    }
+
+        if(totalballsBowled != totalballsFaced)
+        {
+            printf("The total balls faced by batsman and balls bowled by bowler is not same please reinput\n");
+            if(innings == 2)
+            {
+                getinning1data = false;
+                goto ReEnter;
+            }
+            else
+            {
+                getinning2data = false;
+                goto ReEnter;
+            }
+        }
 
 
         printf("\nEnter extras: ");
