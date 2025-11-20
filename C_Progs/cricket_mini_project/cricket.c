@@ -96,11 +96,13 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
 
 void displayData(int innings)
 {
-    system("cls");
-    char line[100];
+    printf("\n==============================================================\n");
+    printf("|               CRICKET MATCH SUMMARY (INNINGS %d)            |\n", innings);
+    printf("==============================================================\n");
 
-    char batsFile[100], bowlFile[100], extraFile[100], dateFile[100];  
-
+    char line[150];
+    char batsFile[150], bowlFile[150], extraFile[150], dateFile[150];
+    
     char basedir[60] = "D:\\Repositories\\FY_Btech\\C_Progs\\cricket_mini_project\\";
 
     sprintf(batsFile, "%sinnings%d_batsmen.txt", basedir, innings);   
@@ -108,64 +110,72 @@ void displayData(int innings)
     sprintf(extraFile, "%sinnings%d_extras.txt", basedir, innings);   
     sprintf(dateFile, "%sinnings%d_datetime.txt", basedir, innings);  
 
-    printf("\n--- Cricket Match Summary (Innings %d) ---\n\n", innings);
-    printf("");
-
     FILE *fdate = fopen(dateFile, "r");
-    if (fdate && fgets(line, sizeof(line), fdate))   //using size of so not to overflow reading and fgets reads until newline or maximum length
+    if (fdate && fgets(line, sizeof(line), fdate))
     {
-        printf("Match Date & Time: %s\n", line);
+        line[strcspn(line, "\n")] = 0;  // Remove newline
+        printf("| Match Date & Time : %-39s|\n", line);
     }
-    fclose(fdate);
 
-    printf("Batsmen Performance:\n");
-    printf("%-20s %-5s %-5s %-12s\n", "Name", "Runs", "Balls", "Strike Rate");
 
-    FILE *fbats = fopen(batsFile, "r");   
-    if (!fbats)
-    {
-        printf("Error opening %s\n", batsFile);
-        return;
+    printf("--------------------------------------------------------------\n");
+    printf("|                    Batsmen Performance                     |\n");
+    printf("--------------------------------------------------------------\n");
+    printf("| %-20s %-10s %-10s %-15s |\n", "Name", "Runs", "Balls", "Strike Rate");
+
+    FILE *fbats = fopen(batsFile, "r");
+    if (!fbats) 
+    { 
+        printf("Error opening batsmen file.\n"); 
+        return; 
     }
+
     while (fgets(line, sizeof(line), fbats))
     {
         char name[MAX]; int runs, balls;
-        sscanf(line, "%[^,],%d,%d", name, &runs, &balls);       //[^,] reads upto comma  and sscanf used for formatted string
-        float sr = balls > 0 ? ((float)runs / balls) * 100 : 0.0;            //ternary operator used
-        printf("%-20s %-5d %-5d %-12.2f\n", name, runs, balls, sr);
+        sscanf(line, "%[^,],%d,%d", name, &runs, &balls);
+        float sr = balls > 0 ? (runs * 100.0 / balls) : 0;
+        printf("| %-20s %-10d %-10d %-15.2f |\n", name, runs, balls, sr);
+
     }
     fclose(fbats);
 
-    printf("\nBowlers Performance:\n");
-    printf("%-20s %-7s %-8s %-8s %-8s\n", "Name", "Overs", "Runs", "Wickets", "Economy");
+    printf("--------------------------------------------------------------\n");
+    printf("|                    Bowlers Performance                     |\n");
+    printf("--------------------------------------------------------------\n");
+    printf("| %-20s %-8s %-8s %-8s %-10s |\n",
+           "Name", "Overs", "Runs", "Wickets", "Economy");
 
-    FILE *fball = fopen(bowlFile, "r");  
-    if (!fball)
-    {
-        printf("Error opening %s\n", bowlFile);
-        return;
+    FILE *fball = fopen(bowlFile, "r");
+    if (!fball) 
+    { 
+        printf("Error opening bowlers file.\n"); 
+        return; 
     }
+
     while (fgets(line, sizeof(line), fball))
     {
         char name[MAX]; float overs; int runs, wkts;
         sscanf(line, "%[^,],%f,%d,%d", name, &overs, &runs, &wkts);
-        float eco = overs > 0 ? runs / overs : 0.0;
-        printf("%-20s %-7.1f %-8d %-8d %-8.2f\n", name, overs, runs, wkts, eco);
+        float eco = overs > 0 ? runs / overs : 0;
+        printf("| %-20s %-8.1f %-8d %-8d %-10.2f |\n", name, overs, runs, wkts, eco);
+
     }
     fclose(fball);
 
-    FILE *fextra = fopen(extraFile, "r");  
-    if (!fextra)
-    {
-        printf("Error opening %s\n", extraFile);
-        return;
+    FILE *fextra = fopen(extraFile, "r");
+    int extras = 0;
+    if (fextra) 
+    { 
+        fscanf(fextra, "%d", &extras); 
+        fclose(fextra); 
     }
-    int extras;
-    fscanf(fextra, "%d", &extras);
-    fclose(fextra);
 
-    printf("\nExtras: %d\n", extras);
+    printf("--------------------------------------------------------------\n");
+    printf("| Extras: %-50d |\n", extras);
+    printf("==============================================================\n\n");
 }
+
 
 // --- Ball & Bat Animation Functions ---
 void printAt(int x, int y, char c) 
@@ -191,10 +201,10 @@ void drawBat(int x, int topY)
 void animateBall() 
 {
     //system("cls");       // Clear screen for animation
-    int batX = 40, batTopY = 17;
+    int batX = 40, batTopY = 9;
     drawBat(batX, batTopY);
 
-    int x = 10, y = 22, prevx, prevy;
+    int x = 10, y = 14, prevx, prevy;
     for (int i = 0; i < 28; i++) 
     {
         printAt(x, y, 'O');        // Ball
@@ -384,6 +394,8 @@ int main()
         printf("Team 2 wins by %d runs!\n", totalRuns2 - totalRuns1);
     else
         printf("The match is a tie!\n");
+
+    printf("\n\n\n\n\n");  
 
     animateBall();
 
