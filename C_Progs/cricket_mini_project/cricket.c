@@ -98,7 +98,7 @@ void writeData(Batsman batsmen[], int batsmenCount, Bowler bowlers[], int bowler
 void displayData(int innings)
 {
     printf("\n==============================================================\n");
-    printf("|               CRICKET MATCH SUMMARY (INNINGS %d)            |\n", innings);
+    printf("|\033[32m               CRICKET MATCH SUMMARY (INNINGS %d)            \033[0m|\n", innings);          //using ANSI characters for colouring 
     printf("==============================================================\n");
 
     char line[150];
@@ -115,14 +115,14 @@ void displayData(int innings)
     if (fdate && fgets(line, sizeof(line), fdate))
     {
         line[strcspn(line, "\n")] = 0;  // Remove newline
-        printf("| Match Date & Time : %-39s|\n", line);
+        printf("|\033[33m Match Date & Time : %-39s\033[0m|\n", line);
     }
 
 
     printf("--------------------------------------------------------------\n");
-    printf("|                    Batsmen Performance                     |\n");
+    printf("|\033[36m                    Batsmen Performance                     \033[0m|\n");
     printf("--------------------------------------------------------------\n");
-    printf("| %-20s %-10s %-10s %-15s |\n", "Name", "Runs", "Balls", "Strike Rate");
+    printf("|\033[35m %-20s %-10s %-10s %-15s \033[0m|\n", "Name", "Runs", "Balls", "Strike Rate");
 
     FILE *fbats = fopen(batsFile, "r");
     if (!fbats) 
@@ -142,10 +142,9 @@ void displayData(int innings)
     fclose(fbats);
 
     printf("--------------------------------------------------------------\n");
-    printf("|                    Bowlers Performance                     |\n");
+    printf("|\033[36m                    Bowlers Performance                     \033[0m|\n");
     printf("--------------------------------------------------------------\n");
-    printf("| %-20s %-8s %-8s %-8s %-10s |\n",
-           "Name", "Overs", "Runs", "Wickets", "Economy");
+    printf("|\033[35m %-20s %-8s %-8s %-8s %-10s \033[0m|\n", "Name", "Overs", "Runs", "Wickets", "Economy");
 
     FILE *fball = fopen(bowlFile, "r");
     if (!fball) 
@@ -173,7 +172,7 @@ void displayData(int innings)
     }
 
     printf("--------------------------------------------------------------\n");
-    printf("| Extras: %-50d |\n", extras);
+    printf("|\033[34m Extras: %-50d \033[0m|\n", extras);
     printf("==============================================================\n\n");
 }
 
@@ -392,7 +391,6 @@ int main()
             }
             else
             {
-                getinning2data = false;
                 goto ReEnter;
             }
         }
