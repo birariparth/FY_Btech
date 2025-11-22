@@ -207,7 +207,7 @@ void animateBall()
     int x = 10, y = 14, prevx, prevy;
     for (int i = 0; i < 28; i++) 
     {
-        printAt(x, y, 'O');        // Ball
+        printAt(x, y,'O');        // Ball
         Sleep(150);                // Speed 150ms
         prevx = x; prevy = y;
         printAt(prevx, prevy, ' '); // Erase previous
