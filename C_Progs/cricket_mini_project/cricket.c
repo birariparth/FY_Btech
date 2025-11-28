@@ -174,6 +174,9 @@ void displayData(int innings)
     printf("--------------------------------------------------------------\n");
     printf("|\033[34m Extras: %-50d \033[0m|\n", extras);
     printf("==============================================================\n\n");
+
+    printf("\033[999;1H");
+
 }
 
 
@@ -195,6 +198,7 @@ void drawBat(int x, int topY)
         printAt(x - 1, topY + i, '#');      // Bottom
         printAt(x, topY + i, '#');
         printAt(x + 1, topY + i, '#');
+
     }
 }
 
@@ -204,7 +208,7 @@ void animateBall()
     int batX = 40, batTopY = 9;
     drawBat(batX, batTopY);
 
-    int x = 10, y = 14, prevx, prevy;
+    int x = 10, y = 28, prevx, prevy;
     for (int i = 0; i < 28; i++) 
     {
         printAt(x, y,'O');        // Ball
@@ -431,6 +435,11 @@ int main()
         }
     }
 
+    // Move cursor safely below all printed tables
+    printf("\033[999;1H");
+    fflush(stdout);
+    animateBall();
+
     // Concluding Statement
     printf("\n--- Match Result ---\n");
     if (totalRuns1 > totalRuns2)
@@ -440,9 +449,11 @@ int main()
     else
         printf("The match is a tie!\n");
 
-    printf("\n\n\n\n\n");  
+    //printf("\n\n\n\n\n"); 
 
-    animateBall();
+    printf("\nPress Enter to exit...");
+    getchar();  // wait
+    getchar();
 
     return 0;
 }
