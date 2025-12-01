@@ -204,11 +204,11 @@ void drawBat(int x, int topY)
 
 void animateBall() 
 {
-    //system("cls");       // Clear screen for animation
+    system("cls");       // Clear screen for animation
     int batX = 40, batTopY = 9;
     drawBat(batX, batTopY);
 
-    int x = 10, y = 28, prevx, prevy;
+    int x = 10, y = 14, prevx, prevy;
     for (int i = 0; i < 28; i++) 
     {
         printAt(x, y,'O');        // Ball
@@ -434,6 +434,9 @@ int main()
             extras2 = extras;
         }
     }
+    printf("Press enter to continue....");
+    getchar();
+    getchar();
 
     // Move cursor safely below all printed tables
     printf("\033[999;1H");
