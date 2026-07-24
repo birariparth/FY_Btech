@@ -1,4 +1,5 @@
-#include<iostream>
+#include <iostream>
+
 using namespace std;
 
 int main()
@@ -19,14 +20,14 @@ int main()
 
     for(int i = 0; i < 5; i++)
     {
-        cin>>A[i];
+        std::cin >> A[i];
     }
 
     cout<<"\nEnter elements for array 2"<<endl;
 
     for(int i = 0; i < 5; i++)
     {
-        cin>>B[i];
+        std::cin >> B[i];
     }
 
     //Intersection
@@ -34,18 +35,18 @@ int main()
     {
         for(int j = 0; j < 5; j++)
         {
-            if(A[i]==B[j])
+            if(A[i] == B[j])
             {
-                I[k]=A[i];
+                I[k] = A[i];
                 k++;
             }
         }
     }
 
-    cout<<"\nIntersection of sets 1 and 2: "<<endl;
+    cout<<"\nIntersection of sets 1 and 2: "<< endl;
     for(int i = 0;i < k;i++)
     {
-        cout<<I[i]<<" ";
+        cout << I[i] << " ";
     }
 
     //Union
@@ -53,13 +54,13 @@ int main()
     for(int j = 0; j < 10; j++)
     {
         k++;
-        if(k>5)
+        if(k > 5)
         {   
-            U[j]=B[j-5];
+            U[j] = B[j-5];
         }
         else
         {
-            U[j]=A[j];
+            U[j] = A[j];
         }
     }
 
@@ -67,7 +68,7 @@ int main()
     {
         for(int j = i+1; j < size; j++)
         {
-            if(U[i]==U[j])
+            if(U[i] == U[j])
             {
                 deleteindex = j;
 
@@ -81,10 +82,10 @@ int main()
         }
     }
 
-    cout<<"\nUnion of sets 1 and 2: "<<endl;
+    std::cout<<"\nUnion of sets 1 and 2: "<<endl;
     for(int i = 0; i < size; i++)
     {
-        cout<<U[i]<<" ";
+        std::cout<< U[i] <<" ";
     }
 
     //Substraction
@@ -120,8 +121,8 @@ int main()
     cout<<"\nSubstraction of 1-2: "<<endl;
     for(int i = 0; i < sizeS; i++)
     {
-        cout<<S[i]<<" ";
+        std::cout << S[i] << " ";
     }
-    
+
     return 0;
 }
